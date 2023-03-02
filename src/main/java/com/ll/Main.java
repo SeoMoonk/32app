@@ -1,12 +1,32 @@
 package com.ll;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
 
         Scanner sc = new Scanner(System.in);
+
+        File file = new File("c:\\32app\\32app.txt");
+        file.createNewFile();
+
+        FileReader fr = new FileReader(file);
+
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String str;
+
+            while((str = br.readLine()) != null)
+            {
+                System.out.println(str);
+            }
+            br.close();
+        } catch(FileNotFoundException e) {
+            e.printStackTrace();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
 
         String input;
         String saying;
@@ -29,9 +49,27 @@ public class Main {
 
             if(input.equals("종료"))
             {
-                System.out.println("명언 앱을 종료합니다.");
 
-                sc.close();
+                try {
+                    System.out.println("명언 앱을 종료합니다.");
+
+                    FileWriter fw = new FileWriter(file);
+
+                    fw.write("번호 / 작가 / 명언\n");
+                    fw.write("-".repeat(30) + "\n");
+
+                    for (int i = wise_saying.size(); i > 0; i--) {
+                        System.out.printf("%d / %s / %s \n", wise_saying.get(i-1).number, wise_saying.get(i-1).author, wise_saying.get(i-1).saying);
+
+                        fw.write(wise_saying.get(i-1).number + " / " + wise_saying.get(i-1).author + " / " + wise_saying.get(i-1).saying + "\n");
+
+                    }
+
+                    fw.close();
+                    sc.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 break;
             }
             else if(input.equals("등록"))
@@ -51,13 +89,33 @@ public class Main {
             }
             else if(input.equals("목록"))
             {
-                System.out.println("번호 / 작가 / 명언");
-                System.out.println("-".repeat(30));
+//                System.out.println("번호 / 작가 / 명언");
+//                System.out.println("-".repeat(30));
+//
+//                for(int i = wise_saying.size(); i > 0; i--)
+//                {
+//                    System.out.printf("%d / %s / %s \n", wise_saying.get(i-1).number, wise_saying.get(i-1).author, wise_saying.get(i-1).saying);
+//                }
 
-                for(int i = wise_saying.size(); i > 0; i--)
-                {
-                    System.out.printf("%d / %s / %s \n", wise_saying.get(i-1).number, wise_saying.get(i-1).author, wise_saying.get(i-1).saying);
+                //적어놓은 txt 파일로 읽어오는 것으로 변경
+
+                try{
+
+                    BufferedReader br = new BufferedReader(new FileReader(file));
+                    String str;
+
+                    while((str = br.readLine()) != null)
+                    {
+                        System.out.println(str);
+                    }
+                    br.close();
+                } catch(FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch(IOException e) {
+                    e.printStackTrace();
                 }
+
+
             }
             else if(input.startsWith("삭제"))
             {
@@ -143,7 +201,7 @@ public class Main {
             }
             else if(input.equals("빌드"))
             {
-
+                System.out.println("빌드는 아직 미구현 입니다.");
             }
         }
     }
