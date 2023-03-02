@@ -3,8 +3,11 @@ package com.ll;
 import java.io.*;
 import java.util.*;
 
+import org.json.JSONObject;
+import org.json.JSONException;
+
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, JSONException {
 
         Scanner sc = new Scanner(System.in);
 
@@ -13,20 +16,11 @@ public class Main {
 
         FileReader fr = new FileReader(file);
 
-        try{
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String str;
+        Map<String, String> map = new HashMap<>();
 
-            while((str = br.readLine()) != null)
-            {
-                System.out.println(str);
-            }
-            br.close();
-        } catch(FileNotFoundException e) {
-            e.printStackTrace();
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+        File jsonFile = new File("c:\\32app\\app32.json");
+
+        JSONObject jo = new JSONObject();
 
         String input;
         String saying;
@@ -84,6 +78,26 @@ public class Main {
 
                 wise_saying.add(new Wise_saying(count, saying, author));
 
+                map.put("author", wise_saying.get(count-1).author);
+                map.put("content", wise_saying.get(count-1).saying);
+                map.put("id", String.valueOf(wise_saying.get(count-1).number));
+
+                jo.put("id", map.get("id"));
+                jo.put("content", map.get("content"));
+                jo.put("author", map.get("author"));
+
+                String jsonStr = jo.toString();
+
+                try {
+                    FileWriter jsfw = new FileWriter(jsonFile);
+
+                    jsfw.write(jsonStr);
+
+                    jsfw.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 System.out.printf("%d 번 명언이 등록되었습니다. \n", count);
 
             }
@@ -98,7 +112,6 @@ public class Main {
 //                }
 
                 //적어놓은 txt 파일로 읽어오는 것으로 변경
-
                 try{
 
                     BufferedReader br = new BufferedReader(new FileReader(file));
