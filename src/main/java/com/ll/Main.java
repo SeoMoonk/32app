@@ -78,26 +78,6 @@ public class Main {
 
                 wise_saying.add(new Wise_saying(count, saying, author));
 
-                map.put("author", wise_saying.get(count-1).author);
-                map.put("content", wise_saying.get(count-1).saying);
-                map.put("id", String.valueOf(wise_saying.get(count-1).number));
-
-                jo.put("id", map.get("id"));
-                jo.put("content", map.get("content"));
-                jo.put("author", map.get("author"));
-
-                String jsonStr = jo.toString();
-
-                try {
-                    FileWriter jsfw = new FileWriter(jsonFile);
-
-                    jsfw.write(jsonStr);
-
-                    jsfw.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
                 System.out.printf("%d 번 명언이 등록되었습니다. \n", count);
 
             }
@@ -214,7 +194,31 @@ public class Main {
             }
             else if(input.equals("빌드"))
             {
-                System.out.println("빌드는 아직 미구현 입니다.");
+
+                for(int i=wise_saying.size(); i>0; i--)
+                {
+                    map.put("author", wise_saying.get(i-1).author);
+                    map.put("content", wise_saying.get(i-1).saying);
+                    map.put("id", String.valueOf(wise_saying.get(i-1).number));
+
+                    jo.put("id", map.get("id"));
+                    jo.put("content", map.get("content"));
+                    jo.put("author", map.get("author"));
+                }
+
+                String jsonStr = jo.toString();
+                try {
+                    FileWriter jsfw = new FileWriter(jsonFile);
+
+                    jsfw.write(jsonStr);
+
+                    jsfw.close();
+
+                    System.out.println("json파일로 갱신이 완료되었습니다.");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
         }
     }
